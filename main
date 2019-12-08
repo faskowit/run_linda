@@ -1,0 +1,10 @@
+#!/bin/bash
+#PBS -l nodes=1:ppn=1,vmem=8g,walltime=01:30:00
+#PBS -N run_linda
+#PBS -V
+
+set -e
+set -x
+
+# run it in the container
+time singularity exec -e docker://dorianps/linda:20191201 ./run.sh
