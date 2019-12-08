@@ -16,7 +16,7 @@ if (!file.exists(inputImg)) {
 }
 
 # create oDir if if does not exist
-dir.create(file.path(oDir))
+dir.create(file.path(outDir))
 # and if couldn't write, stop
 if (!dir.exists(file.path(outDir))) {
   stop("output dir could not be written")
