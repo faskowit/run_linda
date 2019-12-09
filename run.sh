@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# default number of threads
+ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=8
+
 # helper func
 function checkisfile {
 
@@ -26,18 +29,30 @@ if [[ $# -lt 2 ]] ; then help_prompt ; exit 1 ; fi
 # read in files
 while [ "$1" != "" ]; do
     case $1 in
-        -f | -func ) shift
-                     fmriImg=$1
-                     checkisfile $1
-                     ;;
-        -o | -out ) shift
-								    oDir=$1
-								    ;;
-        * )         help_prompt
-                    exit 1
+        -f | -func )	shift
+                     	fmriImg=$1
+                     	checkisfile $1
+                     	;;
+        -o | -out ) 	shift
+				    	oDir=$1
+				    	;;
+		-t | -threads ) shift
+		# https://stackoverflow.com/questions/806906/how-do-i-test-if-a-variable-is-a-number-in-bash
+						re='^[0-9]+$'
+						if ! [[ $1 =~ $re ]] ; then
+						   echo "-t not a number" >&2; exit 1
+						else
+							ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=$1
+						fi
+						;;
+        * ) help_prompt
+            exit 1
     esac
     shift #this shift "moves up" the arg in after each case
 done
+
+# export num threads to R script
+export ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS
 
 # run it
 cmd="Rscript run_linda.R ${fmriImg} ${oDir}"
