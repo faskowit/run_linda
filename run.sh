@@ -55,6 +55,6 @@ done
 export ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS
 
 # run it
-cmd="Rscript run_linda.R ${fmriImg} ${oDir}"
+cmd="Rscript ${EXEDIR}/run_linda.R ${fmriImg} ${oDir}"
 echo $cmd
 eval $cmd
