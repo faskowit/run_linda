@@ -7,4 +7,4 @@ set -e
 set -x
 
 # run it in the container
-time singularity exec -e docker://dorianps/linda:20191201 ./run.sh $@
+time singularity exec -e docker://dorianps/linda:20200201 ./run.sh $@
