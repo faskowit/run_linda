@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # default number of threads
-ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=8
+ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=2
 
 # helper func
 function checkisfile {
@@ -54,7 +54,27 @@ done
 # export num threads to R script
 export ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS
 
-# run it
-cmd="Rscript ${EXEDIR}/run_linda.R ${fmriImg} ${oDir}"
-echo $cmd
-eval $cmd
+##################################################################
+#################################################################
+
+runit=0
+runit_lim=3
+loopit=True
+
+success_file=${oDir}/Prediction3_probability_native.nii.gz
+
+# check if it completed successfully
+while [[ ${loopit} = True ]] && [[ ${runit} -lt ${runit_lim} ]] ; do
+	
+	runit=$((++runit))
+
+	# run it
+	cmd="Rscript ${EXEDIR}/run_linda.R ${fmriImg} ${oDir}"
+	echo $cmd
+	eval $cmd
+ 
+  	if [[ -e ${success_file} ]] ; then
+  		loopit=False
+  	fi
+done
+
